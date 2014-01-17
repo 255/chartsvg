@@ -5,26 +5,48 @@
 #include <cstdlib>
 #include <fstream>
 #include <limits>
+#include <vector>
 // #include <exception> // TODO: USE EXCEPTIONS AND ERROR-CHECKING AND THE LIKE
 
 /**
     Parses a CSV file.
-
-    Always skips whitespace.
 */
+
+
+// TODO: handle "" and other decimal points
+
 class CSVParser {
 private:
     std::ifstream inputFile;
-    std::streampos start;
+    std::vector<std::string> header; // the column titles
+    size_t columnsCount;
+    bool hasHeaderLine;
+
     
     bool isNewline(char c) {
         return c == '\n' || c == '\r';
     }
 
-    void skipWhitespace() {
-        while (isspace(inputFile.peek()))
+    /*
+        Skip \n and \r. Should allow for stupid Windows-style newlines.
+    */
+    void skipNewlines() {
+        while (isNewline(inputFile.peek()))
             inputFile.ignore(1);
     }
+
+    /*
+        Parse the header line and count the number of columns.
+        Changes the stream position.
+    */
+    void parseHeader();
+
+
+    /*
+        Only count the number of columns. (No header line.)
+        Does NOT change the stream position.
+    */
+    void countColumns();
 
 public:
     static const char DECIMAL_MARK = '.';
@@ -45,12 +67,21 @@ public:
     double nextDouble();
 
     /**
+        Return whether the CSV file appears to have a header line.
+        This simply checks to see if the next character in the stream is 
+        a letter.
+
+        TODO: decide how robust this parser should be. Should this seek to 
+        the beginning before checking or not?
+    */
+    bool hasHeader() { return hasHeaderLine; }
+
+    /**
         Get the header titles as an array of strings;
 
         @return Whether the CSV appears to have headers or not.
     */
-    bool getHeader(std::string titles[]) { return false; } //TODO: Implement
-
+    const std::vector<std::string>& getHeader() { return header; }
 
     /**
         Get whether the input file has reached the end.
@@ -65,7 +96,7 @@ public:
     /**
         Get how many columns this CSV file has.
     */
-    size_t getColumnsCount();
+    size_t getColumnsCount() { return columnsCount; }
 };
 
 #endif

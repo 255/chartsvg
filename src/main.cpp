@@ -23,6 +23,9 @@ int main(int argc, char** argv) {
     plot.print(out, SVGProperties());
     out.close();
 
+#ifdef __WIN32__
     system("pause");
+#endif
+    
     return 0;
 }

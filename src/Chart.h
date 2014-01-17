@@ -1,5 +1,5 @@
 #ifndef CHART_H
-#define CHART
+#define CHART_H
 
 #include <string>
 
@@ -13,7 +13,7 @@ struct SVGProperties {
     An abstract class representing a chart.
 */
 class Chart {
-private:
+protected:
     std::string title;
 
 public:

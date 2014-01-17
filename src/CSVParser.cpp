@@ -2,31 +2,41 @@
 
 CSVParser::CSVParser(const std::string& filename, char field_delim)
     : inputFile(filename) {
-    skipWhitespace();
-    start = inputFile.tellg();
+
+    hasHeaderLine = isalpha(inputFile.peek());
+
+    if (hasHeaderLine)
+        parseHeader();
+    else
+        countColumns();
+
+    skipNewlines();
 }
 
-double CSVParser::nextDouble() {
-    // find the next digit
-    while (!isdigit(inputFile.peek())) {
-        inputFile.ignore(1);
+void CSVParser::parseHeader() { 
+    size_t delimiters = 0;
 
-        if (!inputFile.good())
-            return strtod("NAN", nullptr);
-    }
-
+    // TODO: check seek location?
     char c;
-    std::string token;
-    do {
+    std::string cur;
+    while (!isNewline(inputFile.peek())) {
         c = inputFile.get();
-        token.push_back(c);
-    } while (isdigit(c) || c == DECIMAL_MARK);
 
-    return strtod(token.c_str(), nullptr);
+        if (c == DELIMETER) {
+            delimiters++;
+            header.push_back(cur);
+            cur.clear();
+        } else {
+            cur.push_back(c);
+        }
+    }
+    header.push_back(cur); // the final word
+
+    columnsCount = delimiters+1;
 }
 
-size_t CSVParser::getColumnsCount() {
-    // TODO: This is stupid. Fix this.
+void CSVParser::countColumns() {
+    // TODO: Change this?
     std::streampos curPos(inputFile.tellg());
     size_t delimiters = 0;
 
@@ -40,6 +50,17 @@ size_t CSVParser::getColumnsCount() {
     // restore seek location
     inputFile.seekg(curPos);
 
-    return delimiters+1;
+    columnsCount = delimiters+1;
 }
 
+double CSVParser::nextDouble() {
+    char c;
+    std::string token;
+    do {
+        c = inputFile.get();
+        token.push_back(c);
+    } while (isdigit(c) || c == DECIMAL_MARK);
+
+    skipNewlines();
+    return strtod(token.c_str(), nullptr);
+}

@@ -15,6 +15,7 @@
 *.zip
 
 # OS pollution
+*~
 .DS_Store
 .DS_Store?
 ._*

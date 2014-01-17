@@ -14,6 +14,8 @@ private:
     std::string name;
 
 public:
+    Series(const std::string n) : name(n) {}
+
     /*
         Destructor
     */
@@ -23,6 +25,11 @@ public:
         Return the name of this data series.
     */
     const std::string& getName() const { return name; }
+
+    /**
+        Set the name of this data series.
+    */
+    void setName(const std::string& n) { name = n; }
 };
 
 #endif

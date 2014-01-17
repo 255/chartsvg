@@ -13,7 +13,7 @@
 */
 class ScatterPlot : Chart {
 private:
-    ScatterPlotSeries series;
+    std::vector<ScatterPlotSeries> series;
 
 public:
     /**
