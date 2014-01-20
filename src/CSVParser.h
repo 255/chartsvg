@@ -23,7 +23,7 @@ private:
     bool hasHeaderLine;
 
     
-    bool isNewline(char c) {
+    static bool isNewline(char c) {
         return c == '\n' || c == '\r';
     }
 
@@ -74,7 +74,7 @@ public:
         TODO: decide how robust this parser should be. Should this seek to 
         the beginning before checking or not?
     */
-    bool hasHeader() { return hasHeaderLine; }
+    bool hasHeader() const { return hasHeaderLine; }
 
     /**
         Get the header titles as an array of strings;
@@ -96,7 +96,7 @@ public:
     /**
         Get how many columns this CSV file has.
     */
-    size_t getColumnsCount() { return columnsCount; }
+    size_t getColumnsCount() const { return columnsCount; }
 };
 
 #endif

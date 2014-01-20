@@ -2,30 +2,36 @@
 #include <regex>
 #include <string>
 
-#include "ScatterPlot.h"
+
+#include "Color.h"
+
+#include "ContinuousLineChart.h"
 
 using namespace std;
 
 int main(int argc, char** argv) {
-    if (argc != 3)
-        return 1;
+    if (argc == 3) {
+        ContinuousLineChart plot("Test Plot!", 1280, 768);
 
-    ScatterPlot plot;
+        plot.parseData(argv[1]);
 
-    plot.parseData(argv[1]);
+        cout << "The parser found:" << endl;
+        cout << plot;
 
-    cout << "The parser found:" << endl;
-    cout << plot;
+        plot.printSVG(cout);
 
-    plot.print(cout, SVGProperties());
+        ofstream out(argv[2]);
+        plot.printSVG(out);
+        out.close();
+    }
+    else {
+        int red, green, blue;
+        cin >> red >> green >> blue;
 
-    ofstream out(argv[2]);
-    plot.print(out, SVGProperties());
-    out.close();
+        Color col(red, green, blue);
+        std::cout << col << endl;
 
-#ifdef __WIN32__
-    system("pause");
-#endif
-    
+    }
+    std::cerr << XML_HEADER;
     return 0;
 }

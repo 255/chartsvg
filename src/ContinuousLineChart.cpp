@@ -1,6 +1,6 @@
-#include "ScatterPlot.h"
+#include "ContinuousLineChart.h"
 
-void ScatterPlot::parseData(const std::string& filename) {
+void ContinuousLineChart::parseData(const std::string& filename) {
     CSVParser input(filename);
     
     size_t columns = input.getColumnsCount();
@@ -31,20 +31,19 @@ void ScatterPlot::parseData(const std::string& filename) {
     }
 }
 
-void ScatterPlot::print(std::ostream& os, const SVGProperties& prop) {
-    //TODO: THIS IS A VERY ROUGH MOCKUP!!!
-    os << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-       << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"1000\" version=\"1.1\">\n";
+void ContinuousLineChart::printSVG(std::ostream& os) const {
+    // start the file
+    printSVGHeader(os);
 
-    for (auto s : series)
-        s.print(os);
+    for (const auto& s : series)
+        s.printSVG(os);
 
-    os << "</svg>\n";
+    os << "</svg>";
 }
 
 // TODO: If I keep this, I will need to do some work to it
-std::ostream& operator<< (std::ostream& os, const ScatterPlot& plot) {
-    for (auto s : plot.series)
+std::ostream& operator<< (std::ostream& os, const ContinuousLineChart& plot) {
+    for (const auto& s : plot.series)
         os << s;
 
     return os;
