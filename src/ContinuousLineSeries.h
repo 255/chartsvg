@@ -16,17 +16,14 @@ private:
 
 public:
     ContinuousLineSeries(const std::string& n) : Series(n) {
-        // TODO: THESE ARE DEFAULTS FOR TESTING PURPOSES
-        properties.setFill(Color(0,255,0));
-        properties.setStroke(Color(0,0,255));
-        properties.setProperty("stroke-width", "2");
+        
     }
 
     void addDatum(double x, double y) {
         data[x] = y;
     }
 
-    void printSVG(std::ostream& os) const;
+    void printSVGData(std::ostream& os) const;
 
     // For debugging
     friend std::ostream& operator<< (std::ostream& os, const ContinuousLineSeries& series);

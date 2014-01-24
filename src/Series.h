@@ -16,12 +16,21 @@
 class Series {
 private:
     std::string name;
-
-protected:
     SVGProperties properties;
 
+protected:
+    /*
+        Print the data points
+    */
+    virtual void printSVGData(std::ostream& os) const = 0;
+
 public:
-    Series(const std::string n) : name(n) {}
+    Series(const std::string n) : name(n) {
+        // TODO: THESE ARE DEFAULTS FOR TESTING PURPOSES
+        properties.setFill(Color(0,255,0));
+        properties.setStroke(Color(0,0,255));
+        properties.setProperty("stroke-width", "2");
+    }
 
     /*
         Destructor
@@ -41,7 +50,16 @@ public:
     /**
         Print the series data in SVG format.
     */
-    virtual void printSVG(std::ostream& os) const = 0;
+    void printSVG(std::ostream& os) const {
+        // A group for the properties to all data points/items
+        os << "<g";
+        properties.printSVG(os);
+        os << ">\n";
+
+        printSVGData(os);
+
+        os << "</g>\n";
+    }
 };
 
 #endif

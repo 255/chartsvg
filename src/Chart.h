@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-static const char XML_HEADER[] = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
-
 /**
     An abstract class representing a chart.
 */
@@ -18,19 +16,18 @@ private:
     // TODO: could include background fill/gradient/pattern
     // TODO: could include border?
 
-    // TODO: create a point style class (circle, square, bar, etc.)
+    // TODO: create a point style class (circle, square, bar, etc
+    
 
 protected:
+    // All of the series for this chart
     std::vector<series_t> series;
-    
+
     /*
-        Print the beginning of an SVG document, including the opening <svg> tag
+        Print the body of the SVG file. The header and footer is printed in
+        the non-virtual function Chart::printSVG().
     */
-    void printSVGHeader(std::ostream& os) const {
-        os << XML_HEADER
-           << "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" "
-           << "width=\"" << chart_width << "\" height=\"" << chart_height << "\">\n";
-    }
+    virtual void printSVGBody(std::ostream& os) const = 0;
 
 public:
     Chart(const std::string& title, double width, double height)
@@ -50,7 +47,17 @@ public:
     /**
         Print the chart to an output stream in SVG format.
     */
-    virtual void printSVG(std::ostream& os) const = 0;
+    void printSVG(std::ostream& os) const {
+        static const char XML_HEADER[] = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
+
+        os << XML_HEADER
+           << "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" "
+           << "width=\"" << chart_width << "\" height=\"" << chart_height << "\">\n";
+        
+        printSVGBody(os);
+
+        os << "</svg>";
+    };
 
     /**
         Get the title of this chart.

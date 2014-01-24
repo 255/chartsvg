@@ -1,16 +1,10 @@
 #include "ContinuousLineSeries.h"
 
-void ContinuousLineSeries::printSVG(std::ostream& os) const {
-    // start a group to store the common properties
-    os << "<g";
-    properties.printSVG(os);
-    os << ">\n";
-
+void ContinuousLineSeries::printSVGData(std::ostream& os) const {
     // TODO: This is still very temporary
+    size_t radius = 6;
     for (const auto& datum : data)
-        os << "<circle cx=\"" << datum.first << "\" cy=\"" << datum.second << "\" r=\"10\"/>\n";
-
-    os << "</g>\n";
+        os << "<circle cx=\"" << datum.first << "\" cy=\"" << datum.second << "\" r=\"" << radius << "\"/>\n";
 }
 
 std::ostream& operator<< (std::ostream& os, const ContinuousLineSeries& series) {

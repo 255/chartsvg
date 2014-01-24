@@ -31,14 +31,12 @@ void ContinuousLineChart::parseData(const std::string& filename) {
     }
 }
 
-void ContinuousLineChart::printSVG(std::ostream& os) const {
-    // start the file
-    printSVGHeader(os);
+void ContinuousLineChart::printSVGBody(std::ostream& os) const {
+    x_axis.printSVG(os);
+    y_axis.printSVG(os);
 
     for (const auto& s : series)
         s.printSVG(os);
-
-    os << "</svg>";
 }
 
 // TODO: If I keep this, I will need to do some work to it

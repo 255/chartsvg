@@ -72,7 +72,7 @@ public:
 
     /**
         Set any property to the specified string.
-        This is a little dangerous.
+        TODO: This is a little dangerous.
     */
     void setProperty(const std::string& property, const std::string& value) {
         properties[property] = new StringValue(value);

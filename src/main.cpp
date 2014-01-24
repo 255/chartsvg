@@ -32,6 +32,6 @@ int main(int argc, char** argv) {
         std::cout << col << endl;
 
     }
-    std::cerr << XML_HEADER;
+
     return 0;
 }
